@@ -1,0 +1,5 @@
+nftstorage api key
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIyZjE3NUU4MjlmMGE4ODgxMEIyODU5ZjJFNTU0QzEyNjEyNzUyOUYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY4NTgzOTUyMjA1NywibmFtZSI6ImV0aHNlb3VsIn0.gbCfSd1YcBHWxyhvSVytMKZPeNr0mNftqi_J-DCJUU4
+
+"Authorization":"Bearer YOU_API_KEY"

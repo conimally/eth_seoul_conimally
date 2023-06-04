@@ -49,8 +49,9 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:
-          BoxDecoration(border: Border(top: BorderSide(color: Colors.black12))),
+      decoration: BoxDecoration(
+          color: Color(0xFF9855F2),
+          border: Border(top: BorderSide(color: Color(0xFF9855F2)))),
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -62,11 +63,11 @@ class BottomBar extends StatelessWidget {
               menuButton('Home', TikTokIcons.home, 0),
               menuButton('Search', TikTokIcons.search, 1),
               SizedBox(
-                width: 15,
+                width: 10,
               ),
-              customCreateIcon,
+              Image.asset('assets/icons/create.png', width: 60),
               SizedBox(
-                width: 15,
+                width: 10,
               ),
               menuButton('Messages', TikTokIcons.messages, 2),
               menuButton('Profile', TikTokIcons.profile, 3)

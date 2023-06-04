@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:near_api_flutter/near_api_flutter.dart';
 import 'package:tiktok_flutter/data/video.dart';
 import 'package:tiktok_flutter/screens/feed_viewmodel.dart';
+import 'package:tiktok_flutter/screens/gridCat.dart';
 import 'package:tiktok_flutter/screens/messages_screen.dart';
 import 'package:tiktok_flutter/screens/profile_screen.dart';
 import 'package:tiktok_flutter/screens/search_screen.dart';
@@ -23,8 +26,18 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   final locator = GetIt.instance;
   final feedViewModel = GetIt.instance<FeedViewModel>();
+
+  Map response = {};
+  String contractId = 'friendbook.nearflutter.testnet';
+  String mutateMethod = 'submitMessage';
+  String viewMethod = 'getAllMessages';
+  late Account connectedAccount;
+  String userAccount = 'neararabic.testnet';
+  final _textUserIdController = TextEditingController();
+
   @override
   void initState() {
+    _textUserIdController.text = "nearflutter.testnet";
     feedViewModel.loadVideo(0);
     feedViewModel.loadVideo(1);
 
@@ -514,6 +527,7 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   Widget videoCard(Video video) {
+    final myController = TextEditingController();
     return Stack(
       children: [
         video.controller != null
@@ -556,6 +570,256 @@ class _FeedScreenState extends State<FeedScreen> {
             SizedBox(height: 20)
           ],
         ),
+        Column(
+          children: [
+            InkWell(
+              onTap: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 900,
+                      color: Colors.white,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  '  Thanks to Creator',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  '  with DANGs!',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40),
+                            Image.asset('assets/images/dangdang.png',
+                                width: 169),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  '  Amount',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: TextField(
+                                  controller: myController,
+                                  decoration: const InputDecoration(
+                                    suffixText: 'DANG',
+                                  )),
+                            ),
+                            myController.text == ""
+                                ? Text("")
+                                : Text(
+                                    '${(int.parse(myController.text) / 10).toString()} Near'),
+                            SizedBox(
+                              width: 360,
+                              height: 55,
+                              child: ElevatedButton(
+                                child: const Text(
+                                  'Support!',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.purple, // Background color
+                                ),
+                                onPressed: () {
+                                  setState(() {});
+                                  showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 900,
+                                        color: Colors.white,
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            //mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    '  DANGs to ',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  const Text(
+                                                    'ETH',
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  const Text(
+                                                    '!',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 40),
+                                              Image.asset(
+                                                'assets/images/catcat.png',
+                                                width: 169,
+                                              ),
+                                              SizedBox(height: 30),
+                                              Image.asset(
+                                                  'assets/images/donation_bar.png',
+                                                  width: 360),
+                                              SizedBox(height: 50),
+                                              SizedBox(
+                                                width: 360,
+                                                height: 55,
+                                                child: ElevatedButton(
+                                                  child: const Text(
+                                                    'Mint NFT!',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors
+                                                        .red, // Background color
+                                                  ),
+                                                  onPressed: () =>
+                                                      Get.to(() => gridCat()),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 80),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/dangdang.png',
+                          width: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "10,000 DANG",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          // margin: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Text(
+                            "Support",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        InkWell(
+                          onTap: () {
+                            String walletURL =
+                                'https://wallet.testnet.near.org/login/?';
+                            String contractId =
+                                'friendbook.nearflutter.testnet';
+                            String appTitle = 'Friendbook';
+                            String accountId = userAccount;
+                            String nearSignInSuccessUrl =
+                                'https://near-transaction-serializer.herokuapp.com/success';
+                            String nearSignInFailUrl =
+                                'https://near-transaction-serializer.herokuapp.com/failure';
+
+                            connectedAccount =
+                                NEARTester.loginWithLimitedAccess(
+                                    walletURL,
+                                    contractId,
+                                    accountId,
+                                    appTitle,
+                                    nearSignInSuccessUrl,
+                                    nearSignInFailUrl);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            // margin: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: Text(
+                              "Connect a Wallet",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        )
       ],
     );
   }
@@ -564,5 +828,90 @@ class _FeedScreenState extends State<FeedScreen> {
   void dispose() {
     feedViewModel.controller?.dispose();
     super.dispose();
+  }
+}
+
+class NEARTester {
+  static loginWithLimitedAccess(walletURL, contractId, accountId, appTitle,
+      signInSuccessUrl, signInFailureUrl) {
+    // Generate Keys
+    var keyPair = KeyStore.newKeyPair();
+
+    // Open near wallet in default browser
+    Account account = Account(
+        accountId: accountId,
+        keyPair: keyPair,
+        provider: NEARTestNetRPCProvider());
+
+    var wallet = Wallet(walletURL);
+    wallet.connect(contractId, appTitle, signInSuccessUrl, signInFailureUrl,
+        account.publicKey);
+
+    return account; //connected account
+  }
+
+  static loginWithFullAccess(walletURL, contractId, accountId, appTitle,
+      signInSuccessUrl, signInFailureUrl) {
+    // Generate Keys
+    var keyPair = KeyStore.newKeyPair();
+    var publicKey = KeyStore.publicKeyToString(keyPair.publicKey);
+
+    // Open near wallet in default browser
+    var wallet = Wallet(walletURL);
+
+    wallet.connectWithFullAccess(
+        contractId, appTitle, signInSuccessUrl, signInFailureUrl, publicKey);
+
+    Account account = Account(
+        accountId: accountId,
+        keyPair: keyPair,
+        provider: NEARTestNetRPCProvider());
+
+    return account; //connected account
+  }
+
+  //contract holds the account to use for calling
+  static callMethodLimitedAccess(Contract contract, String method, args) async {
+    var result = await contract.callFunction(method, args);
+    return result;
+  }
+
+  static callViewMethod(Contract contract, String method, args) async {
+    var result = await contract.callViewFuntion(method, args);
+    return result;
+  }
+
+  //contract holds the account to use for calling - account must have a full access key
+  static callMethodFullAccess(Contract contract, String method, args) async {
+    var result = await contract.callFunction(method, args);
+    return result;
+  }
+
+  static callMethodFullAccessWithDeposit(
+      Contract contract, String method, args, nearAmount) async {
+    var result = await contract.callFunction(method, args, nearAmount);
+    return result;
+  }
+
+  static callMethodLimitedAccessWithDeposit(
+      Contract contract,
+      String method,
+      String walletURL,
+      args,
+      nearAmount,
+      successUrl,
+      failureUrl,
+      approvalURL) async {
+    // Open near wallet in default browser
+    var wallet = Wallet(walletURL);
+
+    var result = await contract.callFunctionWithDeposit(
+        method, args, wallet, nearAmount, successUrl, failureUrl, approvalURL);
+    return result;
+  }
+
+  static transferNear(Account account, nearAmount, receiver) async {
+    var result = await account.sendTokens(nearAmount, receiver);
+    return result;
   }
 }

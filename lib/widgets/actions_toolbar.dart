@@ -30,14 +30,14 @@ class ActionsToolbar extends StatelessWidget {
     return Container(
       width: 100.0,
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        _getFollowAction(pictureUrl: userPic),
-        _getSocialAction(icon: TikTokIcons.heart, title: numLikes),
-        _getSocialAction(icon: TikTokIcons.chat_bubble, title: numComments),
-        _getSocialAction(
-            icon: TikTokIcons.reply, title: 'Share', isShare: true),
-        CircleImageAnimation(
-          child: _getMusicPlayerAction(userPic),
-        )
+        Image.asset('assets/left_icon/좋아요.png', width: 45),
+        SizedBox(height: 10),
+        Image.asset('assets/left_icon/command.png', width: 45),
+        SizedBox(height: 10),
+        Image.asset('assets/left_icon/Group 13.png', width: 45),
+        SizedBox(height: 10),
+        Image.asset('assets/left_icon/Group 14.png', width: 45),
+        SizedBox(height: 10),
       ]),
     );
   }
